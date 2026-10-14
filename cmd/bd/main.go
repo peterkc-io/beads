@@ -1156,7 +1156,7 @@ func guardLegacyNoStoreCommand(cmd *cobra.Command, beadsDir string) error {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "bd",
+	Use:   programName,
 	Short: "bd - Dependency-aware issue tracker",
 	Long:  `Issues chained together like beads. A lightweight issue tracker with first-class dependency support.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -2821,6 +2821,7 @@ func main() {
 	// Cobra has created its default help command.
 	rootCmd.InitDefaultHelpCmd()
 	registerHelpAllFlag()
+	rewriteBdxHelp()
 
 	executedCmd, err := rootCmd.ExecuteC()
 
