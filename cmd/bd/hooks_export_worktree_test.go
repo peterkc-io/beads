@@ -316,6 +316,12 @@ func TestHookLanesUseTheWorktreeJSONL(t *testing.T) {
 		t.Fatalf("stub bd must record its invocations: %v", err)
 	}
 
+	originalSelfCommand := selfCommand
+	selfCommand = func(_ string, args ...string) (*exec.Cmd, error) {
+		return exec.Command(filepath.Join(binDir, "bd"), args...), nil
+	}
+	t.Cleanup(func() { selfCommand = originalSelfCommand })
+
 	initConfigForTest(t)
 	config.Set("export.auto", true)
 	config.Set("export.git-add", true)

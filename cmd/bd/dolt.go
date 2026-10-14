@@ -995,7 +995,7 @@ func newForcedDoltStopResult(
 	}
 	if report.Executable != "" {
 		result.ExecutableVerified = boolPointer(
-			report.Executable == "bd" || report.Executable == "dolt",
+			report.Executable == "bd" || report.Executable == programName || report.Executable == "dolt",
 		)
 	}
 	result.ProcessLeftAlone = report.RecordFound &&

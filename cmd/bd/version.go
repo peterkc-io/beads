@@ -135,9 +135,9 @@ func resolveBranch() string {
 // findDuplicateBinaries searches PATH for all "bd" executables.
 // Returns their full paths. If len > 1, there are duplicates.
 func findDuplicateBinaries() []string {
-	name := "bd"
+	name := programName
 	if runtime.GOOS == "windows" {
-		name = "bd.exe"
+		name += ".exe"
 	}
 
 	seen := make(map[string]bool)
