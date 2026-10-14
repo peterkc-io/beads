@@ -1,5 +1,10 @@
 # bd - Beads
 
+## bdx fork
+
+This is an MIT-licensed fork of [gastownhall/beads](https://github.com/gastownhall/beads)
+that ships the `bdx` CLI.
+
 **Distributed graph issue tracker for AI agents, powered by [Dolt](https://github.com/dolthub/dolt).**
 
 **Platforms:** macOS, Linux, Windows, FreeBSD
