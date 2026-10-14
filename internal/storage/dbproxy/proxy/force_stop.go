@@ -213,9 +213,9 @@ func inspectAndStopUnverifiedPID(rootDir string, pid int, deadline time.Time, re
 	}
 	executable = normalizeForceStopExecutable(executable)
 	report.Executable = executable
-	if executable != "bd" && executable != "dolt" {
+	if executable != "bd" && executable != "bdx" && executable != "dolt" {
 		return fmt.Errorf(
-			"proxy.ForceStopUnverified: refusing to signal pid %d from %s: executable basename is %q, want bd or dolt",
+			"proxy.ForceStopUnverified: refusing to signal pid %d from %s: executable basename is %q, want bd, bdx or dolt",
 			pid,
 			report.RecordPath,
 			executable,

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"sort"
 	"strings"
 
@@ -23,7 +22,10 @@ import (
 var doctorFindOrphanedIssues = doctor.FindOrphanedIssues
 
 var closeIssueRunner = func(issueID string) error {
-	cmd := exec.Command("bd", "close", issueID, "--reason", "Implemented")
+	cmd, err := selfCommand("closeIssueRunner", "close", issueID, "--reason", "Implemented")
+	if err != nil {
+		return err
+	}
 	return cmd.Run()
 }
 

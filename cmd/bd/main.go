@@ -1156,7 +1156,7 @@ func guardLegacyNoStoreCommand(cmd *cobra.Command, beadsDir string) error {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "bd",
+	Use:   programName,
 	Short: "bd - Dependency-aware issue tracker",
 	Long:  `Issues chained together like beads. A lightweight issue tracker with first-class dependency support.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -1403,7 +1403,7 @@ var rootCmd = &cobra.Command{
 
 		// Check both the command name and parent command name for subcommands
 		cmdName := cmd.Name()
-		isSubcommand := cmd.Parent() != nil && cmd.Parent().Name() != "bd"
+		isSubcommand := cmd.Parent() != nil && cmd.Parent().Name() != cmd.Root().Name()
 		skipsStoreInit := false
 		if cmd.Parent() != nil {
 			parentName := cmd.Parent().Name()
@@ -2821,6 +2821,7 @@ func main() {
 	// Cobra has created its default help command.
 	rootCmd.InitDefaultHelpCmd()
 	registerHelpAllFlag()
+	rewriteBdxHelp()
 
 	executedCmd, err := rootCmd.ExecuteC()
 

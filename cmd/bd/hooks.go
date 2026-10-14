@@ -1885,7 +1885,11 @@ func exportJSONLForCommit() {
 	// Run from the project root, not .beads/. Embedded Dolt discovery starts
 	// from cwd, so cwd=.beads/ can make the export subprocess look for a
 	// nested .beads/.beads workspace and warn on every commit (GH#3454).
-	cmd := exec.Command("bd", "export", "-o", fullPath)
+	cmd, err := selfCommand("exportJSONLForCommit", "export", "-o", fullPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "beads: pre-commit export warning: %v\n", err)
+		return
+	}
 	cmd.Dir = exportSubprocessDir(beadsDir)
 	cmd.Env = hookSubprocessEnv(os.Environ())
 	cmd.Stderr = os.Stderr
@@ -2243,7 +2247,11 @@ func importJSONLForSync(reason string) {
 	// checkout's tracked file: GH#6680's second symptom, from the fix for its
 	// first. Keeping the marker also suppresses the subprocess's auto-backup,
 	// matching the export lane (hookSubprocessEnv).
-	cmd := exec.Command("bd", "import", "--quiet", fullPath)
+	cmd, err := selfCommand("importJSONLForSync", "import", "--quiet", fullPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "beads: %s import warning: %v\n", reason, err)
+		return
+	}
 	cmd.Dir = exportSubprocessDir(beadsDir)
 	cmd.Env = hookSubprocessEnv(os.Environ())
 

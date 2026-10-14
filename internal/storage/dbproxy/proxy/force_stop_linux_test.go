@@ -118,7 +118,7 @@ func TestForceStopUnverifiedRejectsForeignExecutable(t *testing.T) {
 	writeLegacyProxyRecord(t, root, helper)
 
 	report, err := ForceStopUnverified(root)
-	require.ErrorContains(t, err, "want bd or dolt")
+	require.ErrorContains(t, err, "want bd, bdx or dolt")
 	assert.False(t, report.SignalSent)
 	assert.Empty(t, report.QuarantinedPath)
 	assertHelperAlive(t, helper)

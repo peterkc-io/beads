@@ -12,6 +12,7 @@ import (
 // colorizedHelpFunc wraps Cobra's default help with semantic coloring
 // Applies subtle accent color to group headers for visual hierarchy
 func colorizedHelpFunc(cmd *cobra.Command, args []string) {
+	rewriteBdxHelp()
 	// Build full help output: Long description + Usage
 	var output strings.Builder
 

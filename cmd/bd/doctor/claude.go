@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/steveyegge/beads/internal/utils"
 )
 
 var latestPyPIVersionFetcher = fetchLatestPyPIVersion
@@ -285,7 +287,16 @@ func hasBeadsHooks(settingsPath string) bool {
 // VerifyPrimeOutput checks if bd prime command works and adapts correctly.
 // repoPath is the project root directory.
 func VerifyPrimeOutput(repoPath string) DoctorCheck {
-	cmd := exec.Command("bd", "prime")
+	cmd, err := utils.SelfCommand("VerifyPrimeOutput", "prime")
+	if err != nil {
+		return DoctorCheck{
+			Name:    "bd prime Command",
+			Status:  "error",
+			Message: "Command failed to execute",
+			Detail:  err.Error(),
+			Fix:     "Ensure bd is installed and in PATH",
+		}
+	}
 	output, err := cmd.CombinedOutput()
 
 	if err != nil {
@@ -386,13 +397,16 @@ func CheckDocumentationBdPrimeReference(repoPath string) DoctorCheck {
 	}
 
 	// Docs reference bd prime - verify the command works
-	cmd := exec.Command("bd", "prime", "--help")
-	if err := cmd.Run(); err != nil {
+	cmd, err := utils.SelfCommand("CheckDocumentationBdPrimeReference", "prime", "--help")
+	if err == nil {
+		err = cmd.Run()
+	}
+	if err != nil {
 		return DoctorCheck{
 			Name:    "Prime Documentation",
 			Status:  "warning",
 			Message: "Documentation references 'bd prime' but command not found",
-			Detail:  "Files: " + strings.Join(filesWithBdPrime, ", "),
+			Detail:  err.Error() + "\nFiles: " + strings.Join(filesWithBdPrime, ", "),
 			Fix: "Upgrade bd to get the 'bd prime' command:\n" +
 				"  • Homebrew: brew upgrade beads\n" +
 				"  • Script: " + installScriptCommand + "\n" +
